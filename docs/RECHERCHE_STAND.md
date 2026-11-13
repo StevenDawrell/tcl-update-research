@@ -284,6 +284,33 @@ ersetzen, denn:
 * die Signatur der Original-`V648` zu „übertragen" scheidet aus, weil sie genau
   die Bytes deckt, die man ändern müsste.
 
+### 6.2a Bauen ≠ Signieren: die Werkzeuglandschaft
+
+Alle bekannten Paketierungs-Werkzeuge lösen nur die **Hälfte** des Problems –
+das Zusammenbauen, nicht das Signieren:
+
+| Werkzeug | Kann | Braucht zum Installieren zusätzlich |
+|---|---|---|
+| `delta_generator` (AOSP `system/update_engine`) | Full-/Delta-Payload aus Partitions-Images erzeugen | `--private_key` = **Hersteller-OTA-Key** |
+| `Payload_Repack_Tool` (snowwolf725) | Images → `payload.bin` repacken (`repackPayload.sh`) | RSA-Signierung mit Hersteller-Key |
+| `payload_packer` (Rust) | Full-/Delta-Payloads aus Images (XZ/Zstd/Bzip2) | Signierung (nicht eingebaut, „experimental") |
+| `payload-dumper-go` | `payload.bin` **extrahieren** (Richtung falsch) | – |
+| `signapk` + Release-Key | ZIP-Ganzdateisignatur | **Hersteller-Release-Key** |
+
+**Der Punkt:** Jedes Repack-Tool erzeugt eine *strukturell* gültige `payload.bin`.
+Ohne den privaten OTA-Key bleibt der **Metadata-Signaturblock** leer
+(`metadata_signature_size = 0`) – und `update_engine` verwirft sie. Dazu kommt
+die Ganzdateisignatur der ZIP (`RecoverySystem.verifyPackage`), die `signapk`
+mit dem TCL-Release-Key verlangt. **Zwei Tore, zwei Herstellerschlüssel.**
+
+Das ist kein Werkzeug-, sondern ein Schlüssel-Problem: die öffentlichen
+`otacerts.zip`-Zertifikate reichen zum *Prüfen*, nicht zum *Signieren*.
+
+**Reproduzierbar:** `scripts/verify_signature_gate.py <paket>.zip` zeigt
+pro Paket, ob der Payload-Signaturblock vorhanden ist, und erklärt die beiden
+Tore. Die selbst gebaute AB-Probe (`scripts/build_ab_probe.py`) belegt es:
+korrekt gebaut, aber `metadata signature size: 0` → vom Gerät abgelehnt.
+
 **Damit ist der rein softwarebasierte Weg ohne fremdes Medium endgültig
 ausgeschlossen.** Was bleibt, ist die Suche nach einem **offiziell signierten
 AB-Paket** (siehe §7) – denn genau das würde jetzt, wie oben bewiesen, ohne USB

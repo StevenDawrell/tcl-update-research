@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "C:\Users\jacqu\Downloads\TCL\tcl-fota-tool-pub\scripts\verify_signature_gate.py", line 108, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "C:\Users\jacqu\Downloads\TCL\tcl-fota-tool-pub\scripts\verify_signature_gate.py", line 91, in main
+    inspect(p)
+    ~~~~~~~^^^
+  File "C:\Users\jacqu\Downloads\TCL\tcl-fota-tool-pub\scripts\verify_signature_gate.py", line 65, in inspect
+    with zipfile.ZipFile(path) as zf:
+         ~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\jacqu\AppData\Local\Programs\Python\Python313\Lib\zipfile\__init__.py", line 1414, in __init__
+    self.fp = io.open(file, filemode)
+              ~~~~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\jacqu\\Downloads\\TCL\\tcl-fota-tool\\V8-R75PT01-LF1V690.zip'

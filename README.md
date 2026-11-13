@@ -85,6 +85,11 @@ The file must also be **vendor-signed**; the device rejects anything else.
   trust prevents forgery (no pinning, but system-CA only).
 - **No external file writer exists.** Exhaustive search across all decompiled
   apps: the only `copyFile` functions are unbound AIDL or dead code.
+- **Build ≠ sign.** Community packers (`delta_generator`,
+  `Payload_Repack_Tool`, `payload_packer`/Rust) can *assemble* a `payload.bin`,
+  but all require the vendor's private key to sign it; `signapk` + the vendor
+  release key is needed for the whole-file signature. See
+  `docs/en/INSTALLATION_PATH.md` and `scripts/verify_signature_gate.py`.
 
 **Method:** static RE (JADX) + pattern search over file I/O and path literals +
 reproducible live tests (Android 12, `user` build, AVB `green`, FBE-encrypted).

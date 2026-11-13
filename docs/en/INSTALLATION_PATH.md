@@ -83,6 +83,33 @@ store** (no pinning, but user CAs are not trusted for `targetSdk 30` without a
 `networkSecurityConfig`). Forging the server is therefore not possible without
 root.
 
+## Why self-building a package fails: build ≠ sign
+
+Android OTA tooling solves only half the problem. The tools below can
+**assemble** a `payload.bin` from partition images — none of them can make the
+device **accept** it:
+
+| Tool | Can do | Still required to install |
+|---|---|---|
+| `delta_generator` (AOSP `system/update_engine`) | full/delta payloads from images | `--private_key` = **vendor OTA key** |
+| `Payload_Repack_Tool` (snowwolf725) | repack images → `payload.bin` | RSA signing with the vendor key |
+| `payload_packer` (Rust) | full/delta payloads (XZ/Zstd/Bzip2) | signing (not built in, "experimental") |
+| `payload-dumper-go` | **extract** `payload.bin` (wrong direction) | — |
+| `signapk` + release key | whole-file ZIP signature | **vendor release key** |
+
+Every packer produces a *structurally* valid `payload.bin`. Without the private
+OTA key the **metadata signature block stays empty**
+(`metadata_signature_size = 0`) and `update_engine` rejects it. On top of that,
+`RecoverySystem.verifyPackage()` demands a whole-file signature (`signapk` +
+vendor release key). **Two gates, two vendor keys.** The public `otacerts.zip`
+certificates suffice to *verify*, not to *sign* — so this is a key problem, not
+a tooling problem.
+
+**Reproducible:** `scripts/verify_signature_gate.py <package>.zip` reports, per
+package, whether the payload signature block is present, and explains both
+gates. The self-built A/B probe (`scripts/build_ab_probe.py`) demonstrates it:
+built correctly, yet `metadata signature size: 0` → rejected by the device.
+
 ## Conclusion
 
 | Path | Blocked by | Bypassable? |
