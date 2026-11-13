@@ -1,11 +1,11 @@
 # TCL Update Research — Installing Signed OTA Updates Without USB Media (G10 / 55C655)
 
-[![Status](https://img.shields.io/badge/status-research-complete-blue)](#)
+![Status](https://img.shields.io/badge/status-research%20complete-blue)
 [![Reproducible](https://img.shields.io/badge/reproducible-yes-brightgreen)](#reproducibility)
 [![GDPR](https://img.shields.io/badge/DPR-redacted-orange)](docs/DATENSCHUTZ.md)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 [![AI-crawlers](https://img.shields.io/badge/AI%20crawlers-allowed-brightgreen)](#for-ai-assistants--llms)
-[![Language](https://img.shields.io/badge/lang-English%20%7C%20Deutsch-blue)](#languages)
+![Language](https://img.shields.io/badge/lang-English%20%7C%20Deutsch-blue)
 
 **A reproducible reverse-engineering study:** can a *vendor-signed* system
 update be installed on a TCL Google TV (Realtek RTD platform, model G10 /

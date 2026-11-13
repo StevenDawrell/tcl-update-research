@@ -1,6 +1,6 @@
 # TCL-Update-Forschung — Update ohne USB-Stick (G10 / 55C655)
 
-[![Status](https://img.shields.io/badge/status-research-complete-blue)](#)
+![Status](https://img.shields.io/badge/status-research%20complete-blue)
 [![DSGVO](https://img.shields.io/badge/DPR-redacted-orange)](docs/DATENSCHUTZ.md)
 [![Lizenz](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
