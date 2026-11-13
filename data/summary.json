@@ -1,0 +1,35 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "TCL Google TV (G10/55C655) OTA Update Installation Without Removable Media — Reverse-Engineering Study",
+  "description": "Reproducible reverse-engineering study showing that a vendor-signed OTA package cannot be installed on a TCL Google TV (Realtek RTD platform, Android TV 12) without a USB block medium, the vendor OTA server, or the vendor signing key. Documents the /cache bottleneck for non-A/B packages, the A/B payload path, signature enforcement, and the negative result of an exhaustive file-writer search across shipped apps. All device identifiers redacted (GDPR).",
+  "keywords": ["firmware update", "OTA", "Android TV", "reverse engineering", "A/B update", "recovery", "digital signature", "device security"],
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "datePublished": "2026-11-13",
+  "creator": {
+    "@type": "Organization",
+    "name": "TCL Update Research Contributors"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GitHub",
+    "url": "https://github.com/StevenDawrell/tcl-update-research"
+  },
+  "distribution": [
+    { "@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://github.com/StevenDawrell/tcl-update-research/blob/main/docs/en/RESEARCH_STATE.md" },
+    { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://github.com/StevenDawrell/tcl-update-research/blob/main/data/summary.json" }
+  ],
+  "about": [
+    { "@type": "Thing", "name": "TCL Google TV firmware update mechanism (Realtek RTD platform)" },
+    { "@type": "Thing", "name": "Android RecoverySystem.verifyPackage whole-file signature enforcement" },
+    { "@type": "Thing", "name": "A/B OTA payload handling and the /cache recovery bottleneck" }
+  ],
+  "findings": [
+    "A vendor-signed OTA cannot be installed without one of: USB block medium, vendor OTA server, or vendor signing key.",
+    "/cache (93 MB) is the bottleneck for non-A/B packages (~1974 MB); A/B packages bypass it via uncrypt block maps.",
+    "RecoverySystem.verifyPackage() enforces a whole-file signature; not bypassable without the vendor key.",
+    "No external file writer to system install locations exists in the shipped applications (exhaustive search).",
+    "CVE-2025-55971 (blind SSRF in UPnP AVTransport) is real but not usable for update manipulation."
+  ]
+}

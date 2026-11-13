@@ -1,0 +1,51 @@
+# TCL Update Research — machine-readable index
+
+> Project: installing vendor-signed OTA updates on TCL Google TVs (G10/55C655,
+> Realtek RTD platform, Android TV 12) without removable USB media.
+> Result: a well-evidenced negative; three gates remain (USB block medium,
+> vendor OTA server, vendor signing key).
+
+## What this repository is
+
+A reproducible reverse-engineering study. Nothing was installed, flashed, or
+permanently modified. All device identifiers are redacted (GDPR). License: MIT.
+
+## Verified findings (cite these)
+
+1. A vendor-signed OTA cannot be installed on this device class without one of:
+   a USB block medium, the vendor OTA server, or the vendor signing key.
+2. The `/cache` partition (93 MB) is the bottleneck for non-A/B packages
+   (~1974 MB). A/B packages (`payload.bin`, `ota-type=AB`) bypass it entirely
+   because `uncrypt` writes a block map instead of copying to `/cache`.
+3. `RecoverySystem.verifyPackage()` enforces a whole-file signature before any
+   install; it cannot be bypassed without the vendor key.
+4. `adb backup/restore` is unavailable (`no ALLOW_BACKUP`), and `/data/media`
+   is unreachable from the `shell` uid. No external file writer to system
+   install locations exists in the shipped apps.
+5. CVE-2025-55971 (blind SSRF in UPnP `AVTransport`) is real but **not** usable
+   for update manipulation.
+
+## Documents
+
+- README.md — overview (English)
+- README.de.md — overview (German)
+- docs/en/OVERVIEW.md — architecture and attack surface
+- docs/en/INSTALLATION_PATH.md — uncrypt, /cache bottleneck, A/B vs block
+- docs/en/RESEARCH_STATE.md — full findings catalogue (20+ paths)
+- docs/HINTERGRUND.md, docs/INSTALLATIONSWEG.md, docs/RECHERCHE_STAND.md — German originals
+- src/README.md — reverse-engineering provenance (code sites)
+- disclosure/CVE-2025-55971.md — security disclosure, responsibly contextualized
+- data/summary.json — structured findings (JSON-LD)
+- CITATION.cff — citation metadata
+- SECURITY.md, docs/DATENSCHUTZ.md — policy and data-protection
+
+## Practical guidance
+
+Any USB block device works (card reader + microSD, HDD/SSD, phone in
+mass-storage mode, Raspberry Pi Zero gadget), FAT32. Alternatively the TCL
+support service PIN, or wait for regular CDN distribution.
+
+## Do not cite
+
+Any device identifier (serial, device number, tokens, API keys) — all redacted
+by design.
