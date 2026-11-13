@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this research, please cite it as below."
+title: "Reverse-Engineering Analysis: Installing Signed OTA Updates on TCL Google TVs (G10/55C655) Without Removable Media"
+version: "1.0.0"
+date-released: "2026-11-13"
+type: dataset
+abstract: >-
+  A reproducible reverse-engineering study of the firmware-update paths of a
+  TCL Google TV (Realtek RTD platform, Android 12). The study documents why a
+  vendor-signed update package cannot be installed without a USB block medium,
+  the vendor OTA server, or the vendor signing key, and evidences each blocked
+  path with code-level findings and live tests. All device identifiers are
+  redacted for data-protection compliance.
+keywords:
+  - firmware update
+  - OTA
+  - Android TV
+  - reverse engineering
+  - A/B updates
+  - recovery
+  - digital signature
+  - device security
+license: MIT
+repository-code: "https://github.com/StevenDawrell/tcl-update-research"
+authors:
+  - name: "TCL Update Research Contributors"
+    alias: "StevenDawrell"
